@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd 
-import matplotlib.pyplot as plt 
+# import matplotlib.pyplot as plt 
 from  sklearn.model_selection import train_test_split 
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import LabelEncoder
@@ -67,5 +67,6 @@ New_Student=pd.DataFrame([New_Student])
 Predict_New_Student=model.predict(New_Student)
 
 convert=le.inverse_transform(Predict_New_Student)
+
 
 print(f"behavior new students : {convert[0]}")
