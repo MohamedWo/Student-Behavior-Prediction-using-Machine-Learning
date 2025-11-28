@@ -1,74 +1,138 @@
-import numpy as np
-import pandas as pd 
-import matplotlib.pyplot as plt 
-from  sklearn.model_selection import train_test_split 
+# import numpy as np
+# import pandas as pd 
+# import matplotlib.pyplot as plt 
+# from  sklearn.model_selection import train_test_split 
+# from sklearn.linear_model import LogisticRegression
+# from sklearn.preprocessing import LabelEncoder
+
+
+# # data={
+# #     "Students":["Ali","Mosa","Mona","Mohamed","Marawan","sohila","ghada","russa","Yossef","Ibrahim"],
+# #     "grades_math":[56,65,87,90,57,43,98,99,53,89],
+# #     "grades_scince":[66,78,87,27,69,59,88,97,88,77],
+# #     "grades_english":[75,40,50,68,47,98,55,86,47,76],
+# #     "behavior":["bad","good","bad","good","bad","good","good","good","bad","bad"],
+# #     "absences":[1,2,8,6,7,5,2,4,9,8],
+# #     "issues":[0,5,7,1,6,6,4,8,9,1],
+# # }
+# Students=["Ali","Mosa","Mona","Mohamed","Marawan","sohila","ghada","russa","Yossef","Ibrahim"]
+# grades_math=[56,65,87,90,57,43,98,99,53,89]
+# grades_scince=[66,78,87,27,69,59,88,97,88,77]
+# grades_english=[75,40,50,68,47,98,55,86,47,76]
+# behavior=["bad","good","bad","good","bad","good","good","good","bad","bad"]
+# absences=[1,2,8,6,7,5,2,4,9,8]
+# issues=[0,5,7,1,6,6,4,8,9,1]
+
+
+# # newdata=pd.DataFrame(data)
+
+
+# df=pd.DataFrame({
+#     "Students":Students,
+#     "math":grades_math,
+#     "scince":grades_scince,
+#     "english":grades_english,
+#     "behavior":behavior,
+#     "absences":absences,
+#     "issues":issues
+# })
+
+# # df.to_csv("studebts_data.csv",index=False)
+
+# le=LabelEncoder()
+# df['behavior_Numiric']=le.fit_transform(df['behavior'])
+# df['behavior_Numiric']
+
+
+# x=df[["math","scince","english","absences","issues"]]
+# y=df['behavior_Numiric']
+
+# Xtrain,Xtest,Ytrain,Ytest=train_test_split(x,y,test_size=0.3,random_state=42)
+
+# model=LogisticRegression()
+# model.fit(Xtrain,Ytrain)
+# Y_pre=model.predict(Xtest)
+
+
+
+# New_Student={
+#     "math": 95 ,
+#     "scince":95 ,
+#     "english": 91,
+#     "absences":0 ,
+#     "issues":0
+# }
+# New_Student=pd.DataFrame([New_Student])
+
+# Predict_New_Student=model.predict(New_Student)
+
+# convert=le.inverse_transform(Predict_New_Student)
+
+
+# print(f"behavior new students : {convert[0]}")
+
+
+
+import streamlit as st
+import pandas as pd
+from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import LabelEncoder
 
+# بيانات الطلاب
+Students = ["Ali","Mosa","Mona","Mohamed","Marawan","sohila","ghada","russa","Yossef","Ibrahim"]
+grades_math = [56,65,87,90,57,43,98,99,53,89]
+grades_scince = [66,78,87,27,69,59,88,97,88,77]
+grades_english = [75,40,50,68,47,98,55,86,47,76]
+behavior = ["bad","good","bad","good","bad","good","good","good","bad","bad"]
+absences = [1,2,8,6,7,5,2,4,9,8]
+issues = [0,5,7,1,6,6,4,8,9,1]
 
-# data={
-#     "Students":["Ali","Mosa","Mona","Mohamed","Marawan","sohila","ghada","russa","Yossef","Ibrahim"],
-#     "grades_math":[56,65,87,90,57,43,98,99,53,89],
-#     "grades_scince":[66,78,87,27,69,59,88,97,88,77],
-#     "grades_english":[75,40,50,68,47,98,55,86,47,76],
-#     "behavior":["bad","good","bad","good","bad","good","good","good","bad","bad"],
-#     "absences":[1,2,8,6,7,5,2,4,9,8],
-#     "issues":[0,5,7,1,6,6,4,8,9,1],
-# }
-Students=["Ali","Mosa","Mona","Mohamed","Marawan","sohila","ghada","russa","Yossef","Ibrahim"]
-grades_math=[56,65,87,90,57,43,98,99,53,89]
-grades_scince=[66,78,87,27,69,59,88,97,88,77]
-grades_english=[75,40,50,68,47,98,55,86,47,76]
-behavior=["bad","good","bad","good","bad","good","good","good","bad","bad"]
-absences=[1,2,8,6,7,5,2,4,9,8]
-issues=[0,5,7,1,6,6,4,8,9,1]
-
-
-# newdata=pd.DataFrame(data)
-
-
-df=pd.DataFrame({
-    "Students":Students,
-    "math":grades_math,
-    "scince":grades_scince,
-    "english":grades_english,
-    "behavior":behavior,
-    "absences":absences,
-    "issues":issues
+# إنشاء DataFrame
+df = pd.DataFrame({
+    "Students": Students,
+    "math": grades_math,
+    "scince": grades_scince,
+    "english": grades_english,
+    "behavior": behavior,
+    "absences": absences,
+    "issues": issues
 })
 
-# df.to_csv("studebts_data.csv",index=False)
+# ترميز السلوك
+le = LabelEncoder()
+df['behavior_Numiric'] = le.fit_transform(df['behavior'])
 
-le=LabelEncoder()
-df['behavior_Numiric']=le.fit_transform(df['behavior'])
-df['behavior_Numiric']
+# تقسيم البيانات
+X = df[["math","scince","english","absences","issues"]]
+y = df['behavior_Numiric']
+Xtrain, Xtest, Ytrain, Ytest = train_test_split(X, y, test_size=0.3, random_state=42)
 
+# نموذج الانحدار اللوجستي
+model = LogisticRegression()
+model.fit(Xtrain, Ytrain)
 
-x=df[["math","scince","english","absences","issues"]]
-y=df['behavior_Numiric']
+# --- Streamlit App ---
+st.title("تنبؤ سلوك الطالب")
 
-Xtrain,Xtest,Ytrain,Ytest=train_test_split(x,y,test_size=0.3,random_state=42)
+st.write("ادخل بيانات الطالب الجديد:")
 
-model=LogisticRegression()
-model.fit(Xtrain,Ytrain)
-Y_pre=model.predict(Xtest)
+math = st.number_input("درجة الرياضيات", min_value=0, max_value=100, value=90)
+scince = st.number_input("درجة العلوم", min_value=0, max_value=100, value=90)
+english = st.number_input("درجة اللغة الإنجليزية", min_value=0, max_value=100, value=90)
+absences = st.number_input("عدد الغيابات", min_value=0, max_value=20, value=0)
+issues = st.number_input("عدد المشكلات", min_value=0, max_value=20, value=0)
 
-
-
-New_Student={
-    "math": 95 ,
-    "scince":95 ,
-    "english": 91,
-    "absences":0 ,
-    "issues":0
-}
-New_Student=pd.DataFrame([New_Student])
-
-Predict_New_Student=model.predict(New_Student)
-
-convert=le.inverse_transform(Predict_New_Student)
-
-
-print(f"behavior new students : {convert[0]}")
-
-
+if st.button("تنبؤ بالسلوك"):
+    New_Student = pd.DataFrame([{
+        "math": math,
+        "scince": scince,
+        "english": english,
+        "absences": absences,
+        "issues": issues
+    }])
+    
+    Predict_New_Student = model.predict(New_Student)
+    convert = le.inverse_transform(Predict_New_Student)
+    
+    st.success(f"السلوك المتوقع للطالب الجديد: {convert[0]}")
